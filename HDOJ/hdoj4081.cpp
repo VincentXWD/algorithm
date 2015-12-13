@@ -19,37 +19,42 @@
 
 using namespace std;
 
-typedef struct Node{
-	int x;
-	int y;
+typedef struct Edge {
+	int u;
+	int v;
 	double w;
-}Node;
+}Edge;
+
+typedef struct Vertex {
+	int u;
+	int v;
+	int p;
+}Vertex;
 
 const int maxn = 1111;
-int n, m, cnt;
-int pre[maxn], vis[maxn], peo[maxn];
-int x[maxn], y[maxn], p[maxn];
-Node e[maxn<<4];
-double mst;
-bool use[maxn<<4];
+const int maxm = 1111 * 1111;
+bool vis[maxn];
+vector<int> G[maxn];
+Edge e[maxm];
+Edge res[maxn];
+Vertex p[maxn];
+int n, cnt;
+int pre[maxn];
+double sum, ans;
+int maxp;
 
-bool cmp(Node n1, Node n2) {
-	return n1.w < n2.w;
+bool cmp(Edge a, Edge b) {
+	return a.w < b.w;
 }
 
-inline void clear() {
-	memset(e, 0, sizeof(e));
-	memset(x, 0, sizeof(x));
-	memset(y, 0, sizeof(y));
-	memset(p, 0, sizeof(p));
-	memset(vis, 0, sizeof(vis));
-	memset(use, 0, sizeof(use));
-	memset(peo, 0, sizeof(peo));
-	m = 0, cnt = 0, mst = 0;
+double dis(Vertex a, Vertex b) {
+	return sqrt(1.0 * ((a.u - b.u) * (a.u - b.u) + (a.v - b.v) * (a.v - b.v)));
 }
 
-inline void init() {
-	for(int i = 0; i < maxn; i++) pre[i] = i;
+void init() {
+	for(int i = 1; i <= n; i++) {
+		pre[i] = i;
+	}
 }
 
 int find(int x) {
@@ -66,46 +71,79 @@ bool unite(int x, int y) {
 	return 0;
 }
 
-double dis(int i, int j) {
-	return sqrt((x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j]));
+void kruskal() {
+	int k = 0;
+	init();
+	sort(e, e+cnt, cmp);
+	for(int i = 0; i < cnt; i++) {
+		if(unite(e[i].u, e[i].v)) {
+			G[e[i].u].push_back(e[i].v);
+			G[e[i].v].push_back(e[i].u);
+			sum += e[i].w;
+			res[k++] = e[i];
+		}
+		if(k == n - 1) {
+			break;
+		}
+	}
+}
+
+void dfs(int u) {
+	vis[u] = 1;
+	if(p[u].p > maxp) {
+		maxp = p[u].p;
+	}
+	for(int i = 0; i < G[u].size(); i++) {
+		if(!vis[G[u][i]]) {
+			dfs(G[u][i]);
+		}
+	}
 }
 
 int main() {
-	freopen("in", "r", stdin);
-	int T;
-	scanf("%d", &T);
-	while(T--) {
-		clear();
+	// freopen("in", "r", stdin);
+	int T_T;
+	scanf("%d", &T_T);
+	while(T_T--) {
+		cnt = 0;
+		maxp = -1;
+		sum = 0;
 		scanf("%d", &n);
-		for(int i = 0; i < n; i++) {
-			scanf("%d %d %d", &x[i], &y[i], &p[i]);
+		for(int i = 0; i <= n; i++) {
+			G[i].clear();
 		}
-		for(int i = 0; i < n - 1; i++) {
-			for(int j = i + 1; j < n; j++) {
-				e[m].x = i;
-				e[m].y = j;
-				e[m++].w = dis(i, j);
+		for(int i = 1;i <= n; i++) {
+			scanf("%d %d %d", &p[i].u, &p[i].v, &p[i].p);
+		}
+		for(int i = 1; i <= n; i++) {
+			for(int j = i + 1; j <= n; j++) {				
+		        e[cnt].u = i;
+		        e[cnt].v = j;
+		        e[cnt].w = dis(p[i], p[j]);
+		        cnt++;
 			}
-		}
-		init();
-		sort(e, e+m, cmp);
-		for(int i = 0; i < m; i++) {
-			if(unite(e[i].x, e[i].y)) {
-				vis[cnt] = i;
-				mst += e[i].w;
-				peo[cnt] += p[e[i].x] + p[e[i].y];
-				cnt++;
-			}
-		}
-		double ans = -1;
-		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < n; j++) {
-				if(i != j) {
-					ans = max(ans, (p[i]+p[j]) / (mst-dis(i,j)));
-				}
-			}
-		}
-		printf("%.2lf\n", ans);
+	    }
+	    kruskal();
+	    ans = 0;
+	    double tmp;
+	    for(int i = 0; i < n - 1; i++) {
+	    	int u = res[i].u;
+	    	int v = res[i].v;
+	    	tmp = 0;
+	    	memset(vis, 0, sizeof(vis));
+	    	vis[v] = 1;
+	    	maxp = 0;
+	    	dfs(u);
+	    	tmp += maxp;
+	    	memset(vis, 0, sizeof(vis));
+	    	vis[u] = 1;
+	    	maxp = 0;
+	    	dfs(v);
+	    	tmp += maxp;
+	    	tmp /= (sum - res[i].w);
+	    	ans = tmp > ans ? tmp : ans;
+	    }
+	    printf("%.2lf\n", ans);
 	}
 	return 0;
 }
