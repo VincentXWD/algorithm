@@ -69,7 +69,7 @@ int main() {
 				}
 			}
 		}
-		printf("Case #%d: %lld %lld\n", _, dp1[na][nb], dp2[na][nb]);
+		printf("Case %d: %lld %lld\n", _, dp1[na][nb], dp2[na][nb]);
 	}
 	return 0;
 }

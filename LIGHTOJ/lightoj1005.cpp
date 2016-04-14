@@ -20,7 +20,7 @@
 using namespace std;
 
 typedef long long ll;
-const int maxn = 333;
+const int maxn = 1400;
 int n, k;
 ll dp[maxn][maxn];
 
@@ -29,10 +29,10 @@ int main() {
 	int T;
 	scanf("%d", &T);
 	memset(dp, 0, sizeof(dp));
-	for(int i = 0; i <= maxn; i++) {
+	for(int i = 0; i <= 31; i++) {
 		dp[i][0] = 1;
 	}
-	for(int i = 1; i <= maxn; i++) {
+	for(int i = 1; i <= 31; i++) {
 		for(int j = 1; j <= i; j++) {
 			dp[i][j] = dp[i-1][j] + (2 * (i - j) + 1) * dp[i-1][j-1];
 			if(j >= 2) dp[i][j] += (i - j + 1) * (i - j + 1) * dp[i-1][j-2];
