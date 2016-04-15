@@ -25,19 +25,15 @@ int w[maxn], v[maxn];
 int dp[1000011];
 
 int main() {
-	// freopen("in", "r", stdin);
+	//freopen("in", "r", stdin);
 	while(~scanf("%d %d", &n, &m)) {
 		for(int i = 0; i < n; i++) {
 			scanf("%d %d", &w[i], &v[i]);
 		}
 		memset(dp, 0, sizeof(dp));
-		bool exflag = 0;
 		for(int i = 0; i < n; i++) {
-			if(exflag) break;
-			for(int j = m; j >= w[i]; j--) {
-				if(exflag) break;
+			for(int j = w[i]; j <= m; j++) {
 				dp[j] = max(dp[j], dp[j-w[i]]+v[i]);
-				if(i == n - 1 && j == m) exflag = 1;
 			}
 		}
 		printf("%d\n", dp[m]);
