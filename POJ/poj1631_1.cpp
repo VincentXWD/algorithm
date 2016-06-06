@@ -40,7 +40,7 @@ using namespace std;
 #define pb(a) push_back(a)
 #define Rlf(a) scanf("%lf", &a);
 #define Rint(a) scanf("%d", &a)
-#define Rll(a) scanf("%lld", &a)
+#define Rll(a) scanf("%I64d", &a)
 #define Rs(a) scanf("%s", a)
 #define Cin(a) cin >> a
 #define FRead() freopen("in", "r", stdin)
@@ -67,28 +67,29 @@ typedef vector<LL> vl;
 typedef vector<vl> vvl;
 typedef vector<bool> vb;
 
+const int maxn = 40040;
 int n;
-LL ret;
-map<LL, LL> cnt;
-map<LL, LL>::iterator it;
+int a[maxn];
+int d[maxn];
+int dp[maxn];
 
 int main() {
 	// FRead();
-	LL s, e;
-	while(~Rint(n)) {
-		cnt.cl();
-		Rep(i, n) {
-			cin >> s >> e;
-			cnt[s]++; cnt[e]--;
-			// if(cnt[e] < 0) cnt[e] = 0;
+	int T;
+	Rint(T);
+	W(T) {
+		Rint(n);
+		For(i, 1, n+1) {
+			Rint(a[i]);
 		}
-		ret = 0;
-		LL cur = 0;
-		for(it = cnt.begin(); it != cnt.end(); it++) {
-			cur += it->sc;
-			ret = max(ret, cur);
+		Cls(dp); Clr(d, 0x7f7f7f);
+		int ret = 0;
+		For(i, 1, n+1) {
+			dp[i] = lower_bound(d+1, d+i, a[i]) - d;
+			d[dp[i]] = min(d[dp[i]], a[i]);
+			ret = max(ret, dp[i]);
 		}
-		cout << ret << endl;
+		printf("%d\n", ret);
 	}
 	RT 0;
 }

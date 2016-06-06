@@ -67,28 +67,17 @@ typedef vector<LL> vl;
 typedef vector<vl> vvl;
 typedef vector<bool> vb;
 
-int n;
-LL ret;
-map<LL, LL> cnt;
-map<LL, LL>::iterator it;
+const int maxn = 55;
+char s[maxn];
 
 int main() {
 	// FRead();
-	LL s, e;
-	while(~Rint(n)) {
-		cnt.cl();
-		Rep(i, n) {
-			cin >> s >> e;
-			cnt[s]++; cnt[e]--;
-			// if(cnt[e] < 0) cnt[e] = 0;
-		}
-		ret = 0;
-		LL cur = 0;
-		for(it = cnt.begin(); it != cnt.end(); it++) {
-			cur += it->sc;
-			ret = max(ret, cur);
-		}
-		cout << ret << endl;
+	Rs(s);
+	int n = strlen(s);
+	sort(s, s+n);
+	for(int i = n - 1; i >= 0; i--) {
+		if(s[i] != s[n-1]) break;
+		printf("%c", s[i]);
 	}
 	RT 0;
 }

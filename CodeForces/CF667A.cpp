@@ -40,7 +40,7 @@ using namespace std;
 #define pb(a) push_back(a)
 #define Rlf(a) scanf("%lf", &a);
 #define Rint(a) scanf("%d", &a)
-#define Rll(a) scanf("%lld", &a)
+#define Rll(a) scanf("%I64d", &a)
 #define Rs(a) scanf("%s", a)
 #define Cin(a) cin >> a
 #define FRead() freopen("in", "r", stdin)
@@ -67,28 +67,12 @@ typedef vector<LL> vl;
 typedef vector<vl> vvl;
 typedef vector<bool> vb;
 
-int n;
-LL ret;
-map<LL, LL> cnt;
-map<LL, LL>::iterator it;
-
+double d, h, v, e;
 int main() {
 	// FRead();
-	LL s, e;
-	while(~Rint(n)) {
-		cnt.cl();
-		Rep(i, n) {
-			cin >> s >> e;
-			cnt[s]++; cnt[e]--;
-			// if(cnt[e] < 0) cnt[e] = 0;
-		}
-		ret = 0;
-		LL cur = 0;
-		for(it = cnt.begin(); it != cnt.end(); it++) {
-			cur += it->sc;
-			ret = max(ret, cur);
-		}
-		cout << ret << endl;
-	}
+	cin >> d >> h >> v >> e;
+	d /= 2;
+	if(v / (pi * d * d) <= e) printf("NO\n");
+	else printf("YES\n%.10f", h / (v / (pi * d * d) - e));
 	RT 0;
 }
