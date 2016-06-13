@@ -37,7 +37,7 @@ int main() {
 		memset(dp, 0, sizeof(dp));
 		for(int i = 1; i <= n; i++) {
 			for(int k = 1; k <= K; k++) {
-				dp[i][k] += dp[i-1][k];
+				dp[i][k] = dp[i-1][k];
 				int cnt = 0;
 				for(int j = i; j >= 1; j--) {
 					if(y[i] - y[j] > w) break;

@@ -32,12 +32,8 @@ public:
 		for(int i = 0; i <= nb; i++) dp[0][i] = i;
 		for(int i = 1; i <= na; i++) {
 			for(int j = 1; j <= nb; j++) {
-				if(word1[i-1] == word2[j-1]) {
-					dp[i][j] = min(dp[i][j], dp[i-1][j-1]);
-				}
-				else {
-					dp[i][j] = min(dp[i][j], dp[i-1][j-1]+1);
-				}
+				if(word1[i-1] == word2[j-1]) dp[i][j] = min(dp[i][j], dp[i-1][j-1]);
+				else dp[i][j] = min(dp[i][j], dp[i-1][j-1]+1);
 				dp[i][j] = min(dp[i][j], dp[i-1][j]+1);
 				dp[i][j] = min(dp[i][j], dp[i][j-1]+1);
 			}
